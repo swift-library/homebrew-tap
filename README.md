@@ -8,9 +8,10 @@ brew install swift-library/tap/swift-sh
 ```
 
 swift-sh requires Swift 6.3 or newer on `PATH`. On macOS, it requires macOS 15
-or newer and the SDK from Xcode 26 or newer. Select a matching Swift release
-toolchain when Xcode's bundled compiler is older. The formula uses the selected
-toolchain for its source build and the CLI uses it to compile scripts.
+or newer and Xcode 26 or newer selected with `xcode-select`. Select a matching
+Swift release toolchain when Xcode's bundled compiler is older. The formula
+uses the selected toolchain for its source build and the CLI uses it to compile
+scripts.
 
 The tap checks formal GitHub Releases daily. Candidate formula updates pass
 formatting, audit, source installation, and runtime checks before a separate
