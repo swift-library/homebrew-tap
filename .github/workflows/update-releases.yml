@@ -34,6 +34,7 @@ jobs:
         with:
           name: distribution-${{ github.run_id }}-${{ github.run_attempt }}
           path: .candidate/
+          include-hidden-files: true
           if-no-files-found: error
   verify:
     needs: prepare
