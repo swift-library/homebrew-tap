@@ -1,0 +1,15 @@
+{
+  "originHash" : "20ac758e4e48cf3c91bc961d4d015b93c34d95cb938419a2706c4b05f46b4d0c",
+  "pins" : [
+    {
+      "identity" : "swift-semver",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swift-library/swift-semver",
+      "state" : {
+        "revision" : "e03a776897fdf01ef1e3680bbad44b7e8795e15e",
+        "version" : "0.1.0"
+      }
+    }
+  ],
+  "version" : 3
+}
