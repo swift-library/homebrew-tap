@@ -5,11 +5,12 @@ set -euo pipefail
 : "${GITHUB_ENV:?This helper selects a toolchain for GitHub Actions}"
 export XCODE_VERSION="${1:?Specify an installed Xcode version}"
 python3 - <<'PYTHON'
-import os, pathlib, plistlib
+import os, pathlib, plistlib, subprocess
 expected = os.environ['XCODE_VERSION']
 for app in sorted(pathlib.Path('/Applications').glob('Xcode*.app')):
     info = plistlib.loads((app / 'Contents/Info.plist').read_bytes())
     if info.get('CFBundleShortVersionString') == expected:
+        subprocess.run(['sudo', 'xcode-select', '--switch', str(app / 'Contents/Developer')], check=True)
         with open(os.environ['GITHUB_ENV'], 'a') as output:
             print('DEVELOPER_DIR=' + str(app / 'Contents/Developer'), file=output)
         break
