@@ -1,8 +1,8 @@
 class SwiftSh < Formula
   desc "Run single-file Swift scripts with SwiftPM dependencies"
   homepage "https://github.com/swift-library/swift-sh"
-  url "https://github.com/swift-library/swift-sh/archive/refs/tags/v0.1.0.tar.gz"
-  sha256 "2cdfab4a3ddc8583254f02d9b2ef5326d9b1d0bc1ec8fffd3823094be8a87024"
+  url "https://github.com/swift-library/swift-sh/archive/refs/tags/v0.1.1.tar.gz"
+  sha256 "74e12f7308cc99a9a35fe58c9b338a0a69460cb86825dc0eebd31b01d36f1eb3"
   license "Unlicense"
 
   env :std
@@ -39,7 +39,7 @@ class SwiftSh < Formula
     SH
     (testpath/"bin/swift").chmod 0755
     ENV.prepend_path "PATH", testpath/"bin"
-    assert_equal "0.1.0\n", shell_output("#{bin}/swift-sh --version")
+    assert_equal "0.1.1\n", shell_output("#{bin}/swift-sh --version")
     assert_match "swift sh", shell_output("#{bin}/swift-sh --help")
     (testpath/"hello.swift").write "print(42)\n"
     assert_equal "42\n", shell_output("#{bin}/swift-sh #{testpath}/hello.swift")
