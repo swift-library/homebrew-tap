@@ -79,6 +79,19 @@ struct ReleaseRecord: Codable, Equatable {
       end
 
       test do
+        ENV["XDG_CACHE_HOME"] = (testpath/"cache").to_s
+        ENV["SWIFT_SH_TEST_COMPILER"] = shell_output("command -v swift").strip
+        # SwiftPM cannot apply a nested sandbox inside Homebrew's test sandbox.
+        (testpath/"bin").mkpath
+        (testpath/"bin/swift").write <<~SH
+          #!/bin/sh
+          case "$1" in
+            build) exec "$SWIFT_SH_TEST_COMPILER" "$@" --disable-sandbox ;;
+            *) exec "$SWIFT_SH_TEST_COMPILER" "$@" ;;
+          esac
+        SH
+        (testpath/"bin/swift").chmod 0755
+        ENV.prepend_path "PATH", testpath/"bin"
         assert_equal "\(version)\\n", shell_output("#{bin}/swift-sh --version")
         assert_match "swift sh", shell_output("#{bin}/swift-sh --help")
         (testpath/"hello.swift").write "print(42)\\n"
