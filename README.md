@@ -65,4 +65,4 @@ with a tool itself to its project.
 The tap's updater and automation code is available under the Apache License
 2.0 with the Swift Runtime Library Exception. See [LICENSE.txt](LICENSE.txt).
 Each formula installs software under its project's own license; swift-sh is
-released under the Unlicense.
+released under the Apache License 2.0 with the Swift Runtime Library Exception.

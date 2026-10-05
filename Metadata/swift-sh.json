@@ -1,9 +1,9 @@
 {
-  "archiveURL" : "https:\/\/github.com\/swift-library\/swift-sh\/archive\/refs\/tags\/v0.1.1.tar.gz",
-  "commit" : "79c71b8c3fc6bac76c74ccea5ae41e6994c9ee21",
-  "releaseID" : 403119320,
+  "archiveURL" : "https:\/\/github.com\/swift-library\/swift-sh\/archive\/refs\/tags\/v0.2.0.tar.gz",
+  "commit" : "65363238e32415930a996adc98d1ab4890090edb",
+  "releaseID" : 403559658,
   "repository" : "swift-library\/swift-sh",
-  "sha256" : "db8fd025978eec71bba2f675854faaf7efdbb1aad3c221abe4b9f6c20d3800c1",
-  "tag" : "v0.1.1",
-  "version" : "0.1.1"
+  "sha256" : "45b3b90a2a9a32105970ad18590642e3f466351c208ef5111637a6e826523098",
+  "tag" : "v0.2.0",
+  "version" : "0.2.0"
 }

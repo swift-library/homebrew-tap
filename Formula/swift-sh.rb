@@ -1,9 +1,9 @@
 class SwiftSh < Formula
   desc "Run single-file Swift scripts with SwiftPM dependencies"
   homepage "https://github.com/swift-library/swift-sh"
-  url "https://github.com/swift-library/swift-sh/archive/refs/tags/v0.1.1.tar.gz"
-  sha256 "db8fd025978eec71bba2f675854faaf7efdbb1aad3c221abe4b9f6c20d3800c1"
-  license "Unlicense"
+  url "https://github.com/swift-library/swift-sh/archive/refs/tags/v0.2.0.tar.gz"
+  sha256 "45b3b90a2a9a32105970ad18590642e3f466351c208ef5111637a6e826523098"
+  license "Apache-2.0" => { with: "Swift-exception" }
 
   env :std
 
@@ -22,7 +22,7 @@ class SwiftSh < Formula
     end
     system "swift", "build", "--disable-sandbox", "-c", "release", "--force-resolved-versions"
     bin.install ".build/release/swift-sh"
-    pkgshare.install "NOTICE", "ThirdPartyLicenses"
+    pkgshare.install "LICENSE.txt", "NOTICE"
   end
 
   test do
@@ -39,7 +39,7 @@ class SwiftSh < Formula
     SH
     (testpath/"bin/swift").chmod 0755
     ENV.prepend_path "PATH", testpath/"bin"
-    assert_equal "0.1.1\n", shell_output("#{bin}/swift-sh --version")
+    assert_equal "0.2.0\n", shell_output("#{bin}/swift-sh --version")
     assert_match "swift sh", shell_output("#{bin}/swift-sh --help")
     (testpath/"hello.swift").write "print(42)\n"
     assert_equal "42\n", shell_output("#{bin}/swift-sh #{testpath}/hello.swift")
