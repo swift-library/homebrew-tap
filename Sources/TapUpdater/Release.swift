@@ -56,7 +56,7 @@ struct ReleaseRecord: Codable, Equatable {
       homepage "https://github.com/swift-library/swift-sh"
       url "\(archiveURL)"
       sha256 "\(sha256)"
-      license "Unlicense"
+      license "Apache-2.0" => { with: "Swift-exception" }
 
       env :std
 
@@ -75,7 +75,7 @@ struct ReleaseRecord: Codable, Equatable {
         end
         system "swift", "build", "--disable-sandbox", "-c", "release", "--force-resolved-versions"
         bin.install ".build/release/swift-sh"
-        pkgshare.install "NOTICE", "ThirdPartyLicenses"
+        pkgshare.install "LICENSE.txt", "NOTICE"
       end
 
       test do
