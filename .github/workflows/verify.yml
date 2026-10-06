@@ -13,6 +13,9 @@ permissions:
   contents: read
   actions: read
 jobs:
+  policy:
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
+    uses: swift-library/.github/.github/workflows/policy.yml@7badcc53166c6afcb265b39c789b8240d9a30233
   verify:
     strategy:
       fail-fast: false
@@ -63,3 +66,21 @@ jobs:
           name: tap-validation-${{ matrix.runner }}
           path: .build/evidence/
           if-no-files-found: warn
+
+  result:
+    if: always()
+    needs: [policy, verify]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Require complete tap validation
+        env:
+          POLICY_RESULT: ${{ needs.policy.result }}
+          VERIFY_RESULT: ${{ needs.verify.result }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          test "$VERIFY_RESULT" = success
+          if [ "$EVENT_NAME" = pull_request ] || [ "$EVENT_NAME" = push ]; then
+            test "$POLICY_RESULT" = success
+          else
+            test "$POLICY_RESULT" = skipped
+          fi
