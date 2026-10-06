@@ -56,10 +56,14 @@ credentials; the formula's installation test uses a local dry-run workflow.
 ## Updates
 
 A scheduled workflow prepares swift-sh updates from stable GitHub releases.
-Automatic PR publication is not configured. Formula updates use signed pull
-requests and reach `master` after Homebrew style and strict audit checks,
-builds from source, and `brew test` on macOS 15 and macOS 26. The updater can
-also prepare swift-appstoreconnect updates through the manual review flow.
+The organization-owned Updater App opens signed pull requests and requests
+squash auto-merge after validating the selected release and proposal identity.
+Required checks include Homebrew style and strict audit, installation from
+source, and runtime tests on macOS 15 and macOS 26. App Store Connect updates
+use the updater's manual review flow.
+
+The App requires the setup described in
+[Release updates](Documentation/ReleaseUpdates.md#updater-app-setup).
 
 ## Contributing
 
