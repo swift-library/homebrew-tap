@@ -16,6 +16,8 @@ jobs:
   policy:
     if: github.event_name == 'pull_request' || github.event_name == 'push'
     uses: swift-library/.github/.github/workflows/policy.yml@7badcc53166c6afcb265b39c789b8240d9a30233
+    with:
+      allow-bots: ${{ vars.UPDATER_APP_BOT_LOGIN }}
   verify:
     strategy:
       fail-fast: false
@@ -41,6 +43,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p .build/evidence
+          python3 -B -m unittest discover -s Tests/Automation
           swift test --force-resolved-versions 2>&1 | tee .build/evidence/swift-test.log
           xcrun swift-format lint --strict --configuration .swift-format --recursive Package.swift Sources Tests
       - if: inputs.candidate-artifact != ''

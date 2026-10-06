@@ -50,7 +50,9 @@ selected with `xcode-select`.
 A scheduled workflow checks swift-sh for a newer published GitHub release
 every day and skips drafts and prereleases. A formula update reaches `master`
 only after it passes Homebrew style and strict audit checks, a build from
-source, and `brew test` on macOS 15 and macOS 26.
+source, and `brew test` on macOS 15 and macOS 26. The configured Updater App
+proposes updates through signed pull requests with auto-merge governed by the
+repository's required checks.
 
 ## Contributing
 
