@@ -62,7 +62,6 @@ struct ReleaseTests {
     #expect(record.formulaName == "swift-appstoreconnect")
     #expect(record.formula.contains("class SwiftAppstoreconnect < Formula"))
     #expect(record.formula.contains("\"--product\", \"appstoreconnect\""))
-    #expect(record.formula.contains("--generate-completion-script"))
     #expect(!record.formula.contains("swift-sh"))
     let foreign = ReleaseRecord(
       repository: "example/swift-appstoreconnect", releaseID: record.releaseID,

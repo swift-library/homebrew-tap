@@ -26,18 +26,19 @@ extension ReleaseRecord {
         build_path = Pathname.new(Utils.safe_popen_read("swift", "build", "-c", "release", "--show-bin-path").strip)
         bin.install build_path/"appstoreconnect"
         pkgshare.install "LICENSE.txt", "NOTICE"
-        generate_completions_from_executable(bin/"appstoreconnect", "--generate-completion-script")
+        generate_completions_from_executable(bin/"appstoreconnect", "completion")
       end
 
       test do
         assert_equal "\(version)\\n", shell_output("#{bin}/appstoreconnect --version")
-        assert_match "App Store Connect", shell_output("#{bin}/appstoreconnect --help")
+        assert_match "appstoreconnect commands list", shell_output("#{bin}/appstoreconnect --help")
         assert_match "publicReleaseReadiness", shell_output(
           "#{bin}/appstoreconnect workflow dry-run public-release-readiness --app-id example-app",
         )
-        assert_predicate bash_completion/"appstoreconnect", :exist?
-        assert_predicate zsh_completion/"_appstoreconnect", :exist?
-        assert_predicate fish_completion/"appstoreconnect.fish", :exist?
+        assert_match "complete -F _appstoreconnect_completions appstoreconnect",
+                     (bash_completion/"appstoreconnect").read
+        assert_match "#compdef appstoreconnect", (zsh_completion/"_appstoreconnect").read
+        assert_match "complete -c appstoreconnect", (fish_completion/"appstoreconnect.fish").read
       end
     end
 
