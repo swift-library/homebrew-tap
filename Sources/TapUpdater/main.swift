@@ -4,8 +4,6 @@
 import Foundation
 import SemVer
 
-let repository = "swift-library/swift-sh"
-
 func request(_ url: URL, authenticated: Bool = false) async throws -> Data {
   var request = URLRequest(url: url)
   request.timeoutInterval = 120
@@ -24,17 +22,17 @@ func request(_ url: URL, authenticated: Bool = false) async throws -> Data {
   return data
 }
 
-func api(_ path: String) async throws -> Data {
+func api(_ path: String, repository: String) async throws -> Data {
   try await request(
     URL(string: "https://api.github.com/repos/" + repository + "/" + path)!, authenticated: true)
 }
 
-func releases() async throws -> [Release] {
+func releases(repository: String) async throws -> [Release] {
   var results: [Release] = []
   var page = 1
   while true {
     let batch = try JSONDecoder().decode(
-      [Release].self, from: await api("releases?per_page=100&page=\(page)"))
+      [Release].self, from: await api("releases?per_page=100&page=\(page)", repository: repository))
     results += batch
     if batch.count < 100 { return results }
     page += 1
@@ -50,44 +48,47 @@ private struct GitReference: Decodable {
   let object: GitObject
 }
 
-func commit(for tag: String) async throws -> String {
+func commit(for tag: String, repository: String) async throws -> String {
   let encoded = tag.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
   var object = try JSONDecoder().decode(
-    GitReference.self, from: await api("git/ref/tags/" + encoded)
+    GitReference.self, from: await api("git/ref/tags/" + encoded, repository: repository)
   ).object
   while object.type == "tag" {
-    object = try JSONDecoder().decode(GitReference.self, from: await api("git/tags/" + object.sha))
-      .object
+    object = try JSONDecoder().decode(
+      GitReference.self, from: await api("git/tags/" + object.sha, repository: repository)
+    )
+    .object
   }
   guard object.type == "commit" else { throw UpdateError.missingCommit }
   return object.sha
 }
 
-func readRecord(_ url: URL) throws -> ReleaseRecord {
-  let record = try JSONDecoder().decode(ReleaseRecord.self, from: Data(contentsOf: url))
-  try record.validate()
-  return record
-}
-
 func verify(_ directory: URL) async throws {
-  let record = try readRecord(directory.appendingPathComponent("Metadata/swift-sh.json"))
-  let release = try JSONDecoder().decode(
-    Release.self, from: await api("releases/\(record.releaseID)"))
-  guard release.version?.description == record.version, release.tagName == record.tag,
-    try await commit(for: record.tag) == record.commit,
-    checksum(try await request(URL(string: record.archiveURL)!)) == record.sha256,
-    try String(contentsOf: directory.appendingPathComponent("Formula/swift-sh.rb"), encoding: .utf8)
-      == record.formula
-  else { throw UpdateError.changedRelease }
+  for record in try distributionRecords(in: directory) {
+    let release = try JSONDecoder().decode(
+      Release.self, from: await api("releases/\(record.releaseID)", repository: record.repository))
+    guard release.version?.description == record.version, release.tagName == record.tag,
+      try await commit(for: record.tag, repository: record.repository) == record.commit,
+      checksum(try await request(URL(string: record.archiveURL)!)) == record.sha256,
+      try String(
+        contentsOf: directory.appendingPathComponent("Formula/\(record.formulaName).rb"),
+        encoding: .utf8) == record.formula
+    else { throw UpdateError.changedRelease }
+  }
 }
 
-func prepare(_ directory: URL) async throws {
-  let currentURL = URL(fileURLWithPath: "Metadata/swift-sh.json")
+func prepare(_ directory: URL, repository: String) async throws {
+  guard ReleaseRecord.supportedRepositories.contains(repository) else {
+    throw UpdateError.invalidRecord
+  }
+  let name = String(repository.split(separator: "/").last!)
+  let currentURL = URL(fileURLWithPath: "Metadata/\(name).json")
   let current =
     FileManager.default.fileExists(atPath: currentURL.path) ? try readRecord(currentURL) : nil
+  guard current == nil || current?.repository == repository else { throw UpdateError.invalidRecord }
   guard
     let release = latestRelease(
-      try await releases(), after: current.flatMap { Version($0.version) })
+      try await releases(repository: repository), after: current.flatMap { Version($0.version) })
   else {
     print("No newer published release.")
     try outputChanged(false)
@@ -97,7 +98,7 @@ func prepare(_ directory: URL) async throws {
   let archiveURL = "https://github.com/\(repository)/archive/refs/tags/\(tag).tar.gz"
   let record = ReleaseRecord(
     repository: repository, releaseID: release.id, tag: tag, version: release.version!.description,
-    commit: try await commit(for: tag), archiveURL: archiveURL,
+    commit: try await commit(for: tag, repository: repository), archiveURL: archiveURL,
     sha256: checksum(try await request(URL(string: archiveURL)!)))
   try record.validate()
   try FileManager.default.createDirectory(
@@ -107,9 +108,9 @@ func prepare(_ directory: URL) async throws {
   let encoder = JSONEncoder()
   encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
   try encoder.encode(record).write(
-    to: directory.appendingPathComponent("Metadata/swift-sh.json"), options: .atomic)
+    to: directory.appendingPathComponent("Metadata/\(name).json"), options: .atomic)
   try record.formula.write(
-    to: directory.appendingPathComponent("Formula/swift-sh.rb"), atomically: true, encoding: .utf8)
+    to: directory.appendingPathComponent("Formula/\(name).rb"), atomically: true, encoding: .utf8)
   try outputChanged(true)
   print("Staged \(tag) at \(record.commit).")
 }
@@ -124,10 +125,14 @@ func outputChanged(_ changed: Bool) throws {
 
 do {
   let arguments = Array(CommandLine.arguments.dropFirst())
-  guard (1...2).contains(arguments.count) else { throw UpdateError.usage }
-  let directory = URL(fileURLWithPath: arguments.count == 2 ? arguments[1] : ".candidate")
+  guard (1...3).contains(arguments.count), arguments.count < 3 || arguments[0] == "prepare" else {
+    throw UpdateError.usage
+  }
+  let directory = URL(fileURLWithPath: arguments.count >= 2 ? arguments[1] : ".candidate")
   switch arguments[0] {
-  case "prepare": try await prepare(directory)
+  case "prepare":
+    try await prepare(
+      directory, repository: arguments.count == 3 ? arguments[2] : "swift-library/swift-sh")
   case "verify": try await verify(directory)
   default: throw UpdateError.usage
   }

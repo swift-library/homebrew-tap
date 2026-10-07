@@ -30,7 +30,7 @@ jobs:
             xcode: '26.6'
             swift: ''
     runs-on: ${{ matrix.runner }}
-    timeout-minutes: 45
+    timeout-minutes: 90
     steps:
       - uses: Homebrew/actions/setup-homebrew@e99025eb970cfa124b8284a35463d87426917478 # main
         with:
@@ -43,26 +43,37 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p .build/evidence
-          python3 -B -m unittest discover -s Tests/Automation
           swift test --force-resolved-versions 2>&1 | tee .build/evidence/swift-test.log
+          python3 -B -m unittest discover -s Tests/Automation
           xcrun swift-format lint --strict --configuration .swift-format --recursive Package.swift Sources Tests
       - if: inputs.candidate-artifact != ''
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: ${{ inputs.candidate-artifact }}
           path: .
-      - name: Verify formula identity and installation
-        if: hashFiles('Formula/swift-sh.rb') != ''
+      - name: Verify release identities and formula style
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           swift run --force-resolved-versions tap-updater verify .
-          brew trust --formula swift-library/tap/swift-sh
           brew style swift-library/tap
+      - name: Verify swift-sh installation
+        if: hashFiles('Formula/swift-sh.rb') != ''
+        run: |
+          set -euo pipefail
+          brew trust --formula swift-library/tap/swift-sh
           brew audit --strict --online swift-library/tap/swift-sh
           brew install --build-from-source swift-library/tap/swift-sh 2>&1 | tee .build/evidence/source-install.log
           brew test swift-library/tap/swift-sh 2>&1 | tee .build/evidence/runtime.log
+      - name: Verify App Store Connect installation
+        if: hashFiles('Formula/swift-appstoreconnect.rb') != ''
+        run: |
+          set -euo pipefail
+          brew trust --formula swift-library/tap/swift-appstoreconnect
+          brew audit --strict --online swift-library/tap/swift-appstoreconnect
+          brew install --build-from-source swift-library/tap/swift-appstoreconnect 2>&1 | tee .build/evidence/appstoreconnect-source-install.log
+          brew test swift-library/tap/swift-appstoreconnect 2>&1 | tee .build/evidence/appstoreconnect-runtime.log
       - if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
