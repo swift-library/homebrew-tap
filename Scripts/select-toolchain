@@ -28,4 +28,6 @@ if [ -n "${2:-}" ]; then
   toolchain="/Library/Developer/Toolchains/swift-$version-RELEASE.xctoolchain/usr/bin"
   "$toolchain/swift" --version
   echo "$toolchain" >> "$GITHUB_PATH"
+  /usr/libexec/PlistBuddy -c 'Print CFBundleIdentifier' "${toolchain%/usr/bin}/Info.plist" |
+    sed 's/^/TOOLCHAINS=/' >> "$GITHUB_ENV"
 fi
