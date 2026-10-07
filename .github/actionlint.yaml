@@ -1,0 +1,3 @@
+config-variables:
+  - UPDATER_APP_CLIENT_ID
+  - UPDATER_APP_BOT_LOGIN
