@@ -64,6 +64,14 @@ jobs:
           brew audit --strict --online swift-library/tap/swift-sh
           brew install --build-from-source swift-library/tap/swift-sh 2>&1 | tee .build/evidence/source-install.log
           brew test swift-library/tap/swift-sh 2>&1 | tee .build/evidence/runtime.log
+      - name: Verify Interface Distiller installation
+        if: hashFiles('Formula/swift-interface-distiller.rb') != ''
+        run: |
+          set -euo pipefail
+          brew trust --formula swift-library/tap/swift-interface-distiller
+          brew audit --strict --online swift-library/tap/swift-interface-distiller
+          brew install --build-from-source swift-library/tap/swift-interface-distiller 2>&1 | tee .build/evidence/interface-distiller-source-install.log
+          brew test swift-library/tap/swift-interface-distiller 2>&1 | tee .build/evidence/interface-distiller-runtime.log
       - name: Verify App Store Connect installation
         if: hashFiles('Formula/swift-appstoreconnect.rb') != ''
         run: |

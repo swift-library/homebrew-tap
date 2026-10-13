@@ -34,6 +34,7 @@ func latestRelease(_ releases: [Release], after current: Version?) -> Release? {
 struct ReleaseRecord: Codable, Equatable {
   static let supportedRepositories: Set<String> = [
     "swift-library/swift-sh", "swift-library/swift-appstoreconnect",
+    "swift-library/swift-interface-distiller",
   ]
 
   let repository: String
@@ -58,6 +59,7 @@ struct ReleaseRecord: Codable, Equatable {
 
   var formula: String {
     if repository == "swift-library/swift-appstoreconnect" { return appStoreConnectFormula }
+    if repository == "swift-library/swift-interface-distiller" { return interfaceDistillerFormula }
     return """
       class SwiftSh < Formula
         desc "Run single-file Swift scripts with SwiftPM dependencies"

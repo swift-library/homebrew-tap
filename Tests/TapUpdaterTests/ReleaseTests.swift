@@ -72,6 +72,20 @@ struct ReleaseTests {
     #expect(throws: UpdateError.self) { try foreign.validate() }
   }
 
+  @Test func interfaceDistillerDistribution() throws {
+    let record = ReleaseRecord(
+      repository: "swift-library/swift-interface-distiller", releaseID: 3,
+      tag: "v0.1.0", version: "0.1.0", commit: String(repeating: "a", count: 40),
+      archiveURL:
+        "https://github.com/swift-library/swift-interface-distiller/archive/refs/tags/v0.1.0.tar.gz",
+      sha256: String(repeating: "b", count: 64))
+    try record.validate()
+    #expect(record.formulaName == "swift-interface-distiller")
+    #expect(record.formula.contains("class SwiftInterfaceDistiller < Formula"))
+    #expect(record.formula.contains("\"--product\", \"interface-distiller\""))
+    #expect(record.formula.contains("coverage.first.fetch(\"eligible\")"))
+  }
+
   @Test func formulaAndMetadataIdentitiesMustMatch() throws {
     let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
       .deletingLastPathComponent().deletingLastPathComponent()
@@ -85,7 +99,7 @@ struct ReleaseTests {
     }
     #expect(throws: UpdateError.self) { try distributionRecords(in: root) }
     var records: [ReleaseRecord] = []
-    for name in ["swift-sh", "swift-appstoreconnect"] {
+    for name in ["swift-sh", "swift-appstoreconnect", "swift-interface-distiller"] {
       let record = ReleaseRecord(
         repository: "swift-library/\(name)", releaseID: 1,
         tag: "v0.1.0", version: "0.1.0", commit: String(repeating: "a", count: 40),
@@ -98,7 +112,9 @@ struct ReleaseTests {
         to: root.appendingPathComponent("Formula/\(name).rb"), atomically: true, encoding: .utf8)
     }
     #expect(
-      try distributionRecords(in: root).map(\.formulaName) == ["swift-appstoreconnect", "swift-sh"])
+      try distributionRecords(in: root).map(\.formulaName) == [
+        "swift-appstoreconnect", "swift-interface-distiller", "swift-sh",
+      ])
     try JSONEncoder().encode(records[0]).write(
       to: root.appendingPathComponent("Metadata/swift-appstoreconnect.json"))
     #expect(throws: UpdateError.self) { try distributionRecords(in: root) }

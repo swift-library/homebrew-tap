@@ -30,6 +30,7 @@ Add the tap, then install a formula by its full name:
 brew tap swift-library/tap
 brew install swift-library/tap/swift-sh
 brew install swift-library/tap/swift-appstoreconnect
+brew install swift-library/tap/swift-interface-distiller
 ```
 
 `brew install` adds the tap on its own when you use the full name, so
@@ -42,11 +43,12 @@ brew install swift-library/tap/swift-appstoreconnect
 | --- | --- | --- |
 | `swift-sh` | Run single-file Swift scripts with SwiftPM dependencies | [swift-library/swift-sh](https://github.com/swift-library/swift-sh) |
 | `swift-appstoreconnect` | Typed App Store Connect API clients and workflow commands | [swift-library/swift-appstoreconnect](https://github.com/swift-library/swift-appstoreconnect) |
+| `swift-interface-distiller` | Collect, query, and compare public-interface evidence | [swift-library/swift-interface-distiller](https://github.com/swift-library/swift-interface-distiller) |
 
 Formulae need Swift 6.3 or later. On macOS, select Xcode 26 or later with
 `xcode-select` and use macOS 15 or later. A standalone Swift toolchain must be
 selected for both `swift` and `xcrun`; the Xcode SDK supplies the platform
-libraries. swift-sh also supports Linux.
+libraries. swift-sh and swift-interface-distiller also support Linux.
 
 swift-appstoreconnect installs the `appstoreconnect` command and Bash, Zsh and
 Fish completions. Its schema inspection commands require a source checkout
@@ -59,7 +61,8 @@ A scheduled workflow prepares swift-sh updates from stable GitHub releases.
 Automatic PR publication is not configured. Formula updates use signed pull
 requests and reach `master` after Homebrew style and strict audit checks,
 builds from source, and `brew test` on macOS 15 and macOS 26. The updater can
-also prepare swift-appstoreconnect updates through the manual review flow.
+also prepare swift-appstoreconnect and swift-interface-distiller updates through
+the manual review flow.
 
 ## Contributing
 
@@ -73,6 +76,6 @@ with a tool itself to its project.
 
 The tap's updater and automation code is available under the Apache License
 2.0 with the Swift Runtime Library Exception. See [LICENSE.txt](LICENSE.txt).
-Each formula installs software under its project's own license. Both tools use
+Each formula installs software under its project's own license. All tools use
 the Apache License 2.0 with the Swift Runtime Library Exception and install
 their third-party notices alongside the executable.
