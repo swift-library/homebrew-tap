@@ -10,11 +10,12 @@ version, source commit, archive URL, and SHA-256. Annotated tags resolve to thei
 commit. A staged update is verified against GitHub again before publication.
 Changing a published identity fails validation.
 
-The updater supports `swift-sh` and `swift-appstoreconnect`. Verification
+The updater supports `swift-sh`, `swift-appstoreconnect` and
+`swift-interface-distiller`. Verification
 requires a matching metadata record for every formula and checks each selected
 release, commit, archive digest and rendered formula against GitHub. The default
-preparation command selects swift-sh; an explicit repository selects App Store
-Connect. A candidate can contain one distribution, while a tap checkout must
+preparation command selects swift-sh; an explicit repository selects another
+supported tool. A candidate can contain one distribution, while a tap checkout must
 verify every live formula.
 
 The daily workflow prepares swift-sh updates in an untracked candidate
@@ -23,12 +24,13 @@ branch rejects the workflow's direct publishing step. Apply accepted candidates
 on a signed branch and publish them through a pull request. Existing release
 tags and metadata remain immutable.
 
-Read-only PR jobs validate the updater and both distributions on macOS 15 and
+Read-only PR jobs validate the updater and all three distributions on macOS 15 and
 26 with matching SDKs and Swift toolchains. Checks include strict Swift and Ruby
 formatting, Homebrew audit, installation from source, and version/help checks.
 swift-sh runs an independent script. App Store Connect runs a local workflow
 plan and verifies the three installed shell completions. These checks require
-no Apple credentials or live API requests.
+no Apple credentials or live API requests. Interface Distiller normalizes a small
+symbol graph and checks its documentation coverage.
 
 Pull requests remain the review entry point for manual formula, updater,
 dependency, and Actions changes. Workflow permissions are read-only by default,
@@ -41,6 +43,7 @@ swift test --force-resolved-versions
 xcrun swift-format lint --strict --configuration .swift-format --recursive Package.swift Sources Tests
 swift run --force-resolved-versions tap-updater prepare
 swift run --force-resolved-versions tap-updater prepare .candidate swift-library/swift-appstoreconnect
+swift run --force-resolved-versions tap-updater prepare .candidate swift-library/swift-interface-distiller
 swift run --force-resolved-versions tap-updater verify .candidate
 ```
 
