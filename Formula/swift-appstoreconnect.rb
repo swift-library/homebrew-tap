@@ -1,8 +1,8 @@
 class SwiftAppstoreconnect < Formula
   desc "App Store Connect API clients and workflow commands"
   homepage "https://github.com/swift-library/swift-appstoreconnect"
-  url "https://github.com/swift-library/swift-appstoreconnect/archive/refs/tags/v0.1.0.tar.gz"
-  sha256 "04633351838bb7ee761d2aa6e097a5ed00f0c376e9bdfb4718b160608f9f8983"
+  url "https://github.com/swift-library/swift-appstoreconnect/archive/refs/tags/v0.2.0.tar.gz"
+  sha256 "a7a934d39016dbd1cc25da962c7ecfb3f328e8b921143187d390cb26c219ef69"
   license "Apache-2.0" => { with: "Swift-exception" }
 
   env :std
@@ -24,7 +24,7 @@ class SwiftAppstoreconnect < Formula
   end
 
   test do
-    assert_equal "0.1.0\n", shell_output("#{bin}/appstoreconnect --version")
+    assert_equal "0.2.0\n", shell_output("#{bin}/appstoreconnect --version")
     assert_match "appstoreconnect commands list", shell_output("#{bin}/appstoreconnect --help")
     assert_match "publicReleaseReadiness", shell_output(
       "#{bin}/appstoreconnect workflow dry-run public-release-readiness --app-id example-app",
