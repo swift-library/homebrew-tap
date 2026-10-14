@@ -1,9 +1,9 @@
 {
-  "archiveURL": "https://github.com/swift-library/swift-appstoreconnect/archive/refs/tags/v0.1.0.tar.gz",
-  "commit": "b49a14ed0efefdefc8c5522b580a1057503fb129",
-  "releaseID": 405977286,
-  "repository": "swift-library/swift-appstoreconnect",
-  "sha256": "04633351838bb7ee761d2aa6e097a5ed00f0c376e9bdfb4718b160608f9f8983",
-  "tag": "v0.1.0",
-  "version": "0.1.0"
+  "archiveURL" : "https:\/\/github.com\/swift-library\/swift-appstoreconnect\/archive\/refs\/tags\/v0.2.0.tar.gz",
+  "commit" : "b58d92f7a9e5eb2b73b39ee350f4bfcfd522cdb2",
+  "releaseID" : 413144520,
+  "repository" : "swift-library\/swift-appstoreconnect",
+  "sha256" : "a7a934d39016dbd1cc25da962c7ecfb3f328e8b921143187d390cb26c219ef69",
+  "tag" : "v0.2.0",
+  "version" : "0.2.0"
 }
