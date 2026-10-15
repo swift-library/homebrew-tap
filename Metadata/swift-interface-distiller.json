@@ -1,9 +1,9 @@
 {
-  "archiveURL" : "https:\/\/github.com\/swift-library\/swift-interface-distiller\/archive\/refs\/tags\/v0.2.0.tar.gz",
-  "commit" : "c6269c2d3707a599c613748c44130aa24afb15b8",
-  "releaseID" : 413193921,
+  "archiveURL" : "https:\/\/github.com\/swift-library\/swift-interface-distiller\/archive\/refs\/tags\/v0.3.1.tar.gz",
+  "commit" : "b3fdff7e43cf45cb6362d9cf843b332ac73565de",
+  "releaseID" : 413361924,
   "repository" : "swift-library\/swift-interface-distiller",
-  "sha256" : "40a1e9c6d29413809298e1a0efad69129b559b2fab6ad3a2b2fe994df2294dda",
-  "tag" : "v0.2.0",
-  "version" : "0.2.0"
+  "sha256" : "bf686408f0107353df47819dd4d2d02baacea76615d1b695dd0e3e6ba49a011c",
+  "tag" : "v0.3.1",
+  "version" : "0.3.1"
 }
