@@ -1,8 +1,8 @@
 class SwiftInterfaceDistiller < Formula
   desc "Collect, query, and compare public-interface evidence from compiler reports"
   homepage "https://github.com/swift-library/swift-interface-distiller"
-  url "https://github.com/swift-library/swift-interface-distiller/archive/refs/tags/v0.2.0.tar.gz"
-  sha256 "40a1e9c6d29413809298e1a0efad69129b559b2fab6ad3a2b2fe994df2294dda"
+  url "https://github.com/swift-library/swift-interface-distiller/archive/refs/tags/v0.3.1.tar.gz"
+  sha256 "bf686408f0107353df47819dd4d2d02baacea76615d1b695dd0e3e6ba49a011c"
   license "Apache-2.0" => { with: "Swift-exception" }
 
   env :std
@@ -27,12 +27,12 @@ class SwiftInterfaceDistiller < Formula
   end
 
   test do
-    assert_equal "0.2.0\n", shell_output("#{bin}/interface-distiller --version")
+    assert_equal "0.3.1\n", shell_output("#{bin}/interface-distiller --version")
     assert_match "public-interface evidence", shell_output("#{bin}/interface-distiller --help")
     (testpath/"configuration.json").write JSON.generate(
       toolchain: "fixture", sdk: "fixture", triple: "fixture", deploymentTarget: "fixture",
       languageMode: "6", buildMode: "debug", conditions: [], traits: [], environment: {},
-      extractorVersion: "0.2.0"
+      extractorVersion: "0.3.1"
     )
     (testpath/"fixture.symbols.json").write JSON.generate(
       metadata:      { formatVersion: { major: 0, minor: 6, patch: 0 }, generator: "fixture" },
