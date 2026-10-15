@@ -1,69 +1,62 @@
+<div align="center">
+
 <p align="center">
-  <img src="Documentation/Assets/Logo.svg" width="160" alt="homebrew-tap logo">
+  <a href="https://github.com/swift-library/homebrew-tap"><img src="Documentation/Assets/Logo.svg" width="160" alt="homebrew-tap logo"></a>
 </p>
 
 <h1 align="center">homebrew-tap</h1>
 
 <p align="center">
-  Homebrew formulae for the swift-library command-line tools.
+  Install swift-library command-line tools from release archives verified by SHA-256.
 </p>
 
 <p align="center">
   <a href="https://github.com/swift-library/homebrew-tap/actions/workflows/verify.yml"><img src="https://github.com/swift-library/homebrew-tap/actions/workflows/verify.yml/badge.svg?branch=master" alt="CI"></a>
-  <a href="LICENSE.txt"><img src="https://img.shields.io/badge/license-Apache--2.0-blue" alt="License: Apache-2.0 WITH Swift-exception"></a>
+  <a href="LICENSE.txt"><img src="https://img.shields.io/badge/license-Apache--2.0-blue?style=flat" alt="License: Apache-2.0 WITH Swift-exception"></a>
 </p>
 
-[Overview](#overview) · [Usage](#usage) · [Formulae](#formulae) ·
-[Updates](#updates) · [Contributing](#contributing) · [License](#license)
+<p align="center">
+  <a href="#overview">Overview</a> ·
+  <a href="#quick-look">Quick look</a> ·
+  <a href="#install">Install</a> ·
+  <a href="#usage">Usage</a> ·
+  <a href="#requirements">Requirements</a> ·
+  <a href="#documentation">Documentation</a> ·
+  <a href="#contributing">Contributing</a> ·
+  <a href="#license">License</a>
+</p>
+
+</div>
 
 ## Overview
 
-This tap installs swift-library tools with Homebrew. Each formula builds its
-tool from the source archive of a published GitHub release and checks the
-archive against a recorded SHA-256 checksum.
+Homebrew handles the source build and adds the executable to your path. The [tool guide](Documentation/Tools.md) explains toolchain requirements, platform support, and command differences.
+
+## Quick look
+
+```sh
+brew install swift-library/tap/swift-sh
+swift sh --version
+```
+
+## Install
+
+Install [Homebrew](https://brew.sh/), then use a full formula name as shown above. `brew install` adds the tap automatically; `brew tap swift-library/tap` adds it explicitly.
 
 ## Usage
 
-Add the tap, then install a formula by its full name:
+Run `brew update` to fetch formula changes and `brew upgrade swift-library/tap/swift-sh` to update an installed tool. Browse [the formula directory](Formula/) for available tools and open each project’s README for its commands.
 
-```bash
-brew tap swift-library/tap
-brew install swift-library/tap/swift-sh
-brew install swift-library/tap/swift-appstoreconnect
-brew install swift-library/tap/swift-interface-distiller
-```
+## Requirements
 
-`brew install` adds the tap on its own when you use the full name, so
-`brew tap` is optional. `brew update` fetches new formula versions, and
-`brew upgrade` installs them.
+- Swift 6.3 or later for the tools built by the formulae
+- On macOS, macOS 15 or later and a matching Xcode SDK/toolchain, as described in the [tool guide](Documentation/Tools.md)
+- Linux is supported by swift-sh and swift-interface-distiller; check the selected tool’s requirements
 
-## Formulae
+## Documentation
 
-| Formula | Description | Project |
-| --- | --- | --- |
-| `swift-sh` | Run single-file Swift scripts with SwiftPM dependencies | [swift-library/swift-sh](https://github.com/swift-library/swift-sh) |
-| `swift-appstoreconnect` | Typed App Store Connect API clients and workflow commands | [swift-library/swift-appstoreconnect](https://github.com/swift-library/swift-appstoreconnect) |
-| `swift-interface-distiller` | Collect, query, and compare public-interface evidence | [swift-library/swift-interface-distiller](https://github.com/swift-library/swift-interface-distiller) |
-
-Formulae need Swift 6.3 or later. On macOS, select Xcode 26 or later with
-`xcode-select` and use macOS 15 or later. A standalone Swift toolchain must be
-selected for both `swift` and `xcrun`; the Xcode SDK supplies the platform
-libraries. swift-sh and swift-interface-distiller also support Linux.
-
-swift-appstoreconnect installs the `appstoreconnect` command and Bash, Zsh and
-Fish completions. Its schema inspection commands require a source checkout
-containing the `Vendor` directory. Live API commands require caller-provided
-credentials; the formula's installation test uses a local dry-run workflow.
-
-## Updates
-
-A daily workflow checks all tool distributions for newer stable GitHub
-releases and opens an issue with the verified release identity and candidate
-files. Closed notices prevent another notification for the same release.
-
-Maintainers review candidates and submit signed pull requests. Formula updates
-reach `master` after Homebrew style and strict audit checks, builds from source,
-and `brew test` on macOS 15 and macOS 26.
+- [Tool installation](Documentation/Tools.md): platform differences, completions, and command prerequisites
+- [Release updates](Documentation/ReleaseUpdates.md): distribution verification and maintainer checks
 
 ## Contributing
 
