@@ -27,7 +27,7 @@ jobs:
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 90
     steps:
-      - uses: Homebrew/actions/setup-homebrew@e99025eb970cfa124b8284a35463d87426917478 # main
+      - uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878 # main
         with:
           token: ${{ github.token }}
       - uses: swift-library/github-workflows/actions/select-toolchain@c73e5121f19dd64e85d3b506dfae95685647d065
