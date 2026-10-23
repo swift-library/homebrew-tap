@@ -61,7 +61,8 @@ Run `brew update` to fetch formula changes and `brew upgrade swift-library/tap/s
 ## Contributing
 
 Open a pull request for changes to formulae, the updater, or workflows. The
-verify workflow runs the same checks on every pull request.
+verify workflow runs the same checks on every pull request. Repository-specific
+automation lives in `scripts/`.
 [Release updates](Documentation/ReleaseUpdates.md) describes how releases are
 selected and verified, and lists the checks to run locally. Report problems
 with a tool itself to its project.

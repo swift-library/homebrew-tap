@@ -12,7 +12,7 @@ from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[2]
-spec = importlib.util.spec_from_file_location("release_notices", ROOT / "Scripts/release-notices.py")
+spec = importlib.util.spec_from_file_location("release_notices", ROOT / "scripts/release-notices.py")
 module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
 SOURCE = "a" * 40
