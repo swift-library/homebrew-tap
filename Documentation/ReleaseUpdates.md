@@ -18,8 +18,9 @@ preparation command selects swift-sh; an explicit repository selects another
 supported tool. A candidate can contain one distribution, while a tap checkout must
 verify every live formula.
 
-The daily workflow checks every distribution recorded in `Metadata/` and
-prepares newer releases in an untracked candidate directory. It verifies the
+The daily workflow uses `scripts/release-notices.py` to check every distribution
+recorded in `Metadata/` and prepare newer releases in an untracked candidate
+directory. It verifies the
 candidate release identities and archives, then opens an issue linking the
 detection run and its candidate artifact. The issue records the release ID,
 version, source commit and archive checksum.
@@ -68,5 +69,5 @@ those files to a reviewed tap checkout, run Homebrew style, strict audit,
 installation from source, and `brew test` for each changed formula by its full
 `swift-library/tap/<formula>` name.
 The update workflow records its source commit and uploads verified candidate
-files. Pull request validation records the installation and runtime logs as
-GitHub Actions artifacts.
+files. Pull request validation reports installation and runtime output in the
+GitHub Actions job logs.

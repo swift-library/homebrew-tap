@@ -2,7 +2,8 @@
 
 Read `README.md` first. `Documentation/ReleaseUpdates.md` owns the distribution
 update contract. Live formulae belong in `Formula/`, release identities in
-`Metadata/`, and GitHub automation in `.github/`.
+`Metadata/`, repository automation scripts in `scripts/`, and GitHub workflows
+in `.github/`.
 
 Preserve immutable release identities. Update formulae only from published
 non-draft, non-prerelease GitHub Releases. Verify style, audit, source install,

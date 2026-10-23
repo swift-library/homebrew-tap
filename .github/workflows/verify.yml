@@ -30,16 +30,15 @@ jobs:
       - uses: Homebrew/actions/setup-homebrew@e99025eb970cfa124b8284a35463d87426917478 # main
         with:
           token: ${{ github.token }}
-      - run: Scripts/select-toolchain "$XCODE_VERSION" "$SWIFT_VERSION"
-        env:
-          XCODE_VERSION: ${{ matrix.xcode }}
-          SWIFT_VERSION: ${{ matrix.swift }}
+      - uses: swift-library/github-workflows/actions/select-toolchain@13b7e934da06a98f1b4ee11bd09cba85c84f458c
+        with:
+          xcode: ${{ matrix.xcode }}
+          swift: ${{ matrix.swift }}
       - name: Validate updater
         run: |
           set -euo pipefail
-          mkdir -p .build/evidence
-          swift test --force-resolved-versions 2>&1 | tee .build/evidence/swift-test.log
-          python3 -B -m unittest discover -s Tests/Automation 2>&1 | tee .build/evidence/notice-tests.log
+          swift test --force-resolved-versions
+          python3 -B -m unittest discover -s Tests/Automation
           xcrun swift-format lint --strict --configuration .swift-format --recursive Package.swift Sources Tests
       - name: Verify release identities and formula style
         env:
@@ -54,30 +53,24 @@ jobs:
           set -euo pipefail
           brew trust --formula swift-library/tap/swift-sh
           brew audit --strict --online swift-library/tap/swift-sh
-          brew install --build-from-source swift-library/tap/swift-sh 2>&1 | tee .build/evidence/source-install.log
-          brew test swift-library/tap/swift-sh 2>&1 | tee .build/evidence/runtime.log
+          brew install --build-from-source swift-library/tap/swift-sh
+          brew test swift-library/tap/swift-sh
       - name: Verify Interface Distiller installation
         if: hashFiles('Formula/swift-interface-distiller.rb') != ''
         run: |
           set -euo pipefail
           brew trust --formula swift-library/tap/swift-interface-distiller
           brew audit --strict --online swift-library/tap/swift-interface-distiller
-          brew install --build-from-source swift-library/tap/swift-interface-distiller 2>&1 | tee .build/evidence/interface-distiller-source-install.log
-          brew test swift-library/tap/swift-interface-distiller 2>&1 | tee .build/evidence/interface-distiller-runtime.log
+          brew install --build-from-source swift-library/tap/swift-interface-distiller
+          brew test swift-library/tap/swift-interface-distiller
       - name: Verify App Store Connect installation
         if: hashFiles('Formula/swift-appstoreconnect.rb') != ''
         run: |
           set -euo pipefail
           brew trust --formula swift-library/tap/swift-appstoreconnect
           brew audit --strict --online swift-library/tap/swift-appstoreconnect
-          brew install --build-from-source swift-library/tap/swift-appstoreconnect 2>&1 | tee .build/evidence/appstoreconnect-source-install.log
-          brew test swift-library/tap/swift-appstoreconnect 2>&1 | tee .build/evidence/appstoreconnect-runtime.log
-      - if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: tap-validation-${{ matrix.runner }}
-          path: .build/evidence/
-          if-no-files-found: warn
+          brew install --build-from-source swift-library/tap/swift-appstoreconnect
+          brew test swift-library/tap/swift-appstoreconnect
 
   result:
     if: always()
