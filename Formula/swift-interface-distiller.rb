@@ -8,7 +8,7 @@ class SwiftInterfaceDistiller < Formula
   env :std
 
   on_macos do
-    depends_on xcode: ["26.0", :build]
+    depends_on xcode: ["26.6", :build]
     depends_on macos: :sequoia
   end
   on_linux do

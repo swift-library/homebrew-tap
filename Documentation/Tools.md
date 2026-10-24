@@ -3,8 +3,9 @@
 Browse [Formula](../Formula/) for the current tools and [Metadata](../Metadata/)
 for their release identities and archive checksums.
 
- 6.3 or later. On macOS, select Xcode 26 or later with
-`xcode-select` and use macOS 15 or later. A standalone Swift toolchain must be
+The tools build with Swift 6.3 or later. On macOS, use macOS 15 or later and
+select Xcode with `xcode-select`: Xcode 26 or later, and Xcode 26.6 or later for
+swift-interface-distiller. A standalone Swift toolchain must be
 selected for both `swift` and `xcrun`; the Xcode SDK supplies the platform
 libraries. swift-sh and swift-interface-distiller also support Linux.
 
