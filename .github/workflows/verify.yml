@@ -18,9 +18,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - runner: macos-15
-            xcode: '26.0.1'
-            swift: '6.3.3'
           - runner: macos-26
             xcode: '26.6'
             swift: ''
