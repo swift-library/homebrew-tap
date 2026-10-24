@@ -84,6 +84,7 @@ struct ReleaseTests {
     #expect(record.formula.contains("class SwiftInterfaceDistiller < Formula"))
     #expect(record.formula.contains("\"--product\", \"interface-distiller\""))
     #expect(record.formula.contains("coverage.first.fetch(\"eligible\")"))
+    #expect(record.formula.contains("assert_match \"public-interface snapshots\""))
   }
 
   @Test func formulaAndMetadataIdentitiesMustMatch() throws {
