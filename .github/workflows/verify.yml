@@ -27,7 +27,7 @@ jobs:
       - uses: Homebrew/actions/setup-homebrew@e99025eb970cfa124b8284a35463d87426917478 # main
         with:
           token: ${{ github.token }}
-      - uses: swift-library/github-workflows/actions/select-toolchain@0d016c87e9631d5c6ecdc781226d843aaec22e71
+      - uses: swift-library/github-workflows/actions/select-toolchain@780ee5a8150d1088ac4256862bdadab632f89912
         with:
           xcode: ${{ matrix.xcode }}
           swift: ${{ matrix.swift }}
