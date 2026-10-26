@@ -23,7 +23,7 @@ jobs:
           persist-credentials: false
       - id: source
         run: echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-      - uses: swift-library/github-workflows/actions/select-toolchain@780ee5a8150d1088ac4256862bdadab632f89912
+      - uses: swift-library/github-workflows/actions/select-toolchain@5dd95c4ee515c667abaea2dc5426e8ef93e88784
         with:
           xcode: '26.6'
           swift: ''
