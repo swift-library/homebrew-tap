@@ -1,0 +1,39 @@
+{
+  "instructions" : {
+    "chatgpt" : {
+
+    },
+    "sections" : [
+      {
+        "hash" : "sha256:82a29c10d2d27502979617dee84626cec3eb72b34505218121b03a9fc024dacc",
+        "name" : "guide",
+        "path" : ".agent/instructions/guide.md",
+        "source" : "."
+      },
+      {
+        "hash" : "sha256:eb2a3005d70bf0d7b7fcd09f6823f19a602ac125e322cbb2ff31dbe8eae975ab",
+        "name" : "code-review-rules",
+        "path" : ".agent/instructions/code-review-rules.md",
+        "source" : "."
+      }
+    ],
+    "targets" : {
+      "AGENTS.md" : {
+        "agents" : [
+          "claude-code",
+          "codex"
+        ],
+        "blockHash" : "sha256:d667c6019d0def7bbba28543f5a5aa3a145c1e7fcffe7c6ba8dd6e117c00aaf9",
+        "created" : false,
+        "headingOffset" : 0
+      }
+    }
+  },
+  "skills" : {
+
+  },
+  "sources" : {
+
+  },
+  "version" : 1
+}
